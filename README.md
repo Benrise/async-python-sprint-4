@@ -68,7 +68,10 @@ GET /<shorten-url-id>/status?[full-info]&[max-result=10]&[offset=0]
 ![image](https://github.com/user-attachments/assets/b7b7635a-69fb-444a-af63-e7c5460154c4)
 
 
-- [ ] (2 балла) Реализуйте возможность передавать ссылки пачками (batch upload).
+- [x] (2 балла) Реализуйте возможность передавать ссылки пачками (batch upload).
+![image](https://github.com/user-attachments/assets/b3070cc5-fbcf-47c1-91f4-936443ad627d)
+![image](https://github.com/user-attachments/assets/9a128b2c-bb36-415b-9be1-e5d9f93d7d9b)
+
 
 <details>
 <summary> Описание изменений </summary>
