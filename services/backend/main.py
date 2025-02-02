@@ -1,14 +1,18 @@
 import uvicorn
 import logging
+from fastapi import FastAPI, Depends, HTTPException, Request
+from fastapi.responses import ORJSONResponse, RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
-from fastapi import FastAPI
-from fastapi.responses import ORJSONResponse
-
+from db.postgres import get_async_session
+from models.url import URL, URLAccess
 from core.logger import LOGGING
 from core.config import settings
-
 from api.v1 import health
 from api.v1 import url
+
 
 app = FastAPI(
     title=settings.project_name,
@@ -19,6 +23,36 @@ app = FastAPI(
 
 app.include_router(health.router)
 app.include_router(url.router)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/{short_id}", summary="Get original URL and redirect")
+async def get_original_url(short_id: str, request: Request, db: AsyncSession = Depends(get_async_session)):
+    url = await db.execute(select(URL).filter(URL.short_id == short_id))
+    url = url.scalars().first()
+    
+    if not url:
+        raise HTTPException(status_code=404, detail="URL not found")
+    
+    client_info = {
+        "user_agent": request.headers.get("User-Agent"),
+        "ip": request.client.host,
+        "referer": request.headers.get("Referer"),
+        "accept_language": request.headers.get("Accept-Language"),
+    }
+    
+    new_access = URLAccess(url_id=url.id, client_info=str(client_info))
+    db.add(new_access)
+    await db.commit()
+    
+    return RedirectResponse(url.original_url, status_code=307)
+
 
 if __name__ == '__main__':
     uvicorn.run(

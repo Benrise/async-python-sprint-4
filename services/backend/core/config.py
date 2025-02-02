@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     
     @property    
     def service_url(self) -> str:
-        return f"http://{self.service_host}:{self.service_port}"
+        return f"http://{'127.0.0.1' if self.is_debug else self.service_host}:{self.service_port}"
     
 settings = Settings()
 
