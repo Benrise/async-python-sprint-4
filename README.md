@@ -69,9 +69,6 @@ GET /<shorten-url-id>/status?[full-info]&[max-result=10]&[offset=0]
 
 
 - [x] (2 балла) Реализуйте возможность передавать ссылки пачками (batch upload).
-![image](https://github.com/user-attachments/assets/b3070cc5-fbcf-47c1-91f4-936443ad627d)
-![image](https://github.com/user-attachments/assets/9a128b2c-bb36-415b-9be1-e5d9f93d7d9b)
-
 
 <details>
 <summary> Описание изменений </summary>
@@ -100,6 +97,8 @@ GET /<shorten-url-id>/status?[full-info]&[max-result=10]&[offset=0]
 ```
 </details>
 
+![image](https://github.com/user-attachments/assets/b3070cc5-fbcf-47c1-91f4-936443ad627d)
+![image](https://github.com/user-attachments/assets/9a128b2c-bb36-415b-9be1-e5d9f93d7d9b)
 
 - [ ] (3 балла) Реализуйте взаимодействие с сервисом авторизованного пользователя. Пользователь может создавать как приватные, так и публичные ссылки или изменять видимость ссылок. Вызов метода `GET /user/status` возвращает все созданные ранее ссылки в формате:
 
