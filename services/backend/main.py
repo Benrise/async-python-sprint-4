@@ -12,6 +12,7 @@ from core.logger import LOGGING
 from core.config import settings
 from api.v1 import health
 from api.v1 import url
+from middlewares.blocked_ip import BlockedIPMiddleware
 
 
 app = FastAPI(
@@ -31,6 +32,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(BlockedIPMiddleware, blocked_ips=settings.blocked_ips)
 
 @app.get("/{short_id}", summary="Get original URL and redirect")
 async def get_original_url(short_id: str, request: Request, db: AsyncSession = Depends(get_async_session)):
