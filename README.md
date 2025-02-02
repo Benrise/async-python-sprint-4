@@ -59,7 +59,10 @@ GET /<shorten-url-id>/status?[full-info]&[max-result=10]&[offset=0]
 ![image](https://github.com/user-attachments/assets/d1394526-b7e1-4894-9e32-26bccf08c47d)
 
 - [ ] (1 балл) Реализуйте возможность «удаления» сохранённого URL. Запись должна остаться, но помечаться как удалённая. При попытке получения полного URL возвращать ответ с кодом `410 Gone`.
-- [ ] (2 балла) Реализуйте middlware, блокирующий доступ к сервису из запрещённых подсетей (black list).
+- [x] (2 балла) Реализуйте middlware, блокирующий доступ к сервису из запрещённых подсетей (black list).
+![image](https://github.com/user-attachments/assets/85392e93-ebc9-48c8-906c-6b2f854200e2)
+
+
 - [ ] (2 балла) Реализуйте возможность передавать ссылки пачками (batch upload).
 
 <details>
