@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from datetime import datetime
 
 from db.postgres import async_engine
+from sqlalchemy.future import select
 
 router = APIRouter(prefix="/health", tags=["Health"])
 
@@ -18,7 +19,7 @@ async def ping() -> dict:
     """Проверка доступности БД"""
     try:
         async with async_engine.begin() as conn:
-            await conn.execute("SELECT * FROM postgres")
+            await conn.execute(select(1)) 
         return {
                 "status": "ok",
                 "timestamp": datetime.now().isoformat(),
