@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     service_host: str = Field(..., alias="BACKEND_HOST")
     service_port: int = Field(..., alias="BACKEND_PORT")
     is_debug: bool = Field(..., alias="BACKEND_DEBUG")
-    blocked_ips: list[str] = ['172.18.0.1']
+    blocked_ips: list[str] = []
     
     @property    
     def service_url(self) -> str:

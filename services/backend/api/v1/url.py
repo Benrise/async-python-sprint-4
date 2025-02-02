@@ -6,7 +6,14 @@ from sqlalchemy import desc, func
 from db.postgres import get_async_session
 from utils.short_id import generate_short_id
 from models.url import URL, URLAccess
-from schemas.url import URLCreateRequest, URLCreateResponse, URLStatusResponse, URLStatusRequest, URLAccessResponse
+from schemas.url import (
+    URLCreateRequest, 
+    URLCreateResponse, 
+    URLStatusResponse, 
+    URLStatusRequest, 
+    URLAccessResponse, 
+    URLDeleteResponse
+)
 from core.config import settings
 
 router = APIRouter(prefix="/url", tags=["URL"])
@@ -78,3 +85,19 @@ async def get_url_status(
         total_accesses=total_count,
         accesses=accesses_list
     )
+    
+
+@router.delete("/{short_id}", summary="Delete URL")
+async def delete_url(short_id: str, db: AsyncSession = Depends(get_async_session)) -> URLDeleteResponse:
+    """Удаление сокращённого URL (помечается как удалённый)"""
+    url = await db.execute(select(URL).filter(URL.short_id == short_id))
+    url = url.scalars().first()
+
+    if not url:
+        raise HTTPException(status_code=404, detail="URL not found")
+    
+    url.is_deleted = True
+    db.add(url)
+    await db.commit()
+
+    return URLDeleteResponse(status="success", message="URL marked as deleted")

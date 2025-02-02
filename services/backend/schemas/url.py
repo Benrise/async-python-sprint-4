@@ -29,3 +29,13 @@ class URLStatusRequest(BaseModel):
     
     class Config:
         use_enum_values = True
+
+class URLDeleteResponse(BaseModel):
+    status: str
+    message: str
+    
+class URLBatchCreateRequest(BaseModel):
+    original_urls: List[URLCreateRequest]
+
+class URLBatchCreateResponse(BaseModel):
+    short_urls: List[URLCreateResponse]

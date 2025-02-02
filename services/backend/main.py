@@ -42,6 +42,9 @@ async def get_original_url(short_id: str, request: Request, db: AsyncSession = D
     if not url:
         raise HTTPException(status_code=404, detail="URL not found")
     
+    if url.is_deleted:
+        raise HTTPException(status_code=410, detail="URL is deleted")
+    
     client_info = {
         "user_agent": request.headers.get("User-Agent"),
         "ip": request.client.host,
