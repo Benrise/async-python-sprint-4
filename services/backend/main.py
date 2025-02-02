@@ -8,6 +8,7 @@ from fastapi.responses import ORJSONResponse
 from core.logger import LOGGING
 from core.config import settings
 
+from api.v1 import health
 
 app = FastAPI(
     title=settings.project_name,
@@ -16,14 +17,7 @@ app = FastAPI(
     openapi_url="/api/v1/docs.json",
 )
 
-
-@app.get("/health")
-async def health_check():
-    return {
-        "status": "healthy",
-        "timestamp": datetime.now().isoformat(),
-    }
-
+app.include_router(health.router)
 
 if __name__ == '__main__':
     uvicorn.run(

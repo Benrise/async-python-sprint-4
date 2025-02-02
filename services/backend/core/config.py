@@ -23,6 +23,14 @@ class PostgresSettings(BaseSettings):
     password: str = Field(..., alias='DB_PASSWORD')
     host: str = Field(..., alias='DB_HOST')
     port: int = Field(..., alias='DB_PORT')
+    
+    @property
+    def async_dsn(self) -> str:
+        return f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.db}"
+
+    @property
+    def sync_dsn(self) -> str:
+        return f"postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.db}"
 
 
 pg = PostgresSettings()
