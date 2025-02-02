@@ -12,7 +12,9 @@ from schemas.url import (
     URLStatusResponse, 
     URLStatusRequest, 
     URLAccessResponse, 
-    URLDeleteResponse
+    URLDeleteResponse,
+    URLBatchCreateRequest,
+    URLBatchCreateResponse
 )
 from core.config import settings
 
@@ -33,6 +35,29 @@ async def create_shorten_url(request: URLCreateRequest, db: AsyncSession = Depen
     await db.commit()
 
     return URLCreateResponse(short_url_id=short_id, short_url=f"{settings.service_url}/{short_id}")
+
+
+@router.post("/batch_create", summary="Create multiple shortened URLs in batch", response_model=URLBatchCreateResponse)
+async def batch_create_shorten_url(request: URLBatchCreateRequest, db: AsyncSession = Depends(get_async_session)) -> URLBatchCreateResponse:
+    """Создание сокращённых URL-ов пачкой"""
+    short_urls = []
+    
+    for url_request in request.original_urls:
+        existing_url = await db.execute(select(URL).filter(URL.original_url == url_request.original_url))
+        existing_url = existing_url.scalars().first()
+        
+        if existing_url:
+            short_urls.append(URLCreateResponse(short_url_id=existing_url.short_id, short_url=f"{settings.service_url}/{existing_url.short_id}"))
+        else:
+            short_id = generate_short_id()
+            new_url = URL(short_id=short_id, original_url=url_request.original_url, visibility=url_request.visibility)
+            db.add(new_url)
+            await db.commit()
+            
+            short_urls.append(URLCreateResponse(short_url_id=short_id, short_url=f"{settings.service_url}/{short_id}"))
+    
+    return URLBatchCreateResponse(short_urls=short_urls)
+
 
 @router.get(
     "/{short_id}/status",
