@@ -1,7 +1,6 @@
 import uvicorn
 import logging
 
-from datetime import datetime
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
@@ -9,6 +8,7 @@ from core.logger import LOGGING
 from core.config import settings
 
 from api.v1 import health
+from api.v1 import url
 
 app = FastAPI(
     title=settings.project_name,
@@ -18,6 +18,7 @@ app = FastAPI(
 )
 
 app.include_router(health.router)
+app.include_router(url.router)
 
 if __name__ == '__main__':
     uvicorn.run(

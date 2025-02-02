@@ -15,6 +15,10 @@ class Settings(BaseSettings):
     service_port: int = Field(..., alias="BACKEND_PORT")
     is_debug: bool = Field(..., alias="BACKEND_DEBUG")
     
+    @property    
+    def service_url(self) -> str:
+        return f"http://{self.service_host}:{self.service_port}"
+    
 settings = Settings()
 
 class PostgresSettings(BaseSettings):
