@@ -25,3 +25,10 @@ async def create_shorten_url(request: URLCreateRequest, db: AsyncSession = Depen
     await db.commit()
 
     return URLCreateResponse(short_url=f"{settings.service_url}/{short_id}")
+
+@router.get("/{short_id}", summary="Get original URL")
+async def get_original_url(short_id: str, db: AsyncSession = Depends(get_async_session)) -> str:
+    url = await db.execute(select(URL).filter(URL.short_id == short_id))
+    url = url.scalars().first()
+    
+    return url.original_url
