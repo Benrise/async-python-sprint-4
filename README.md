@@ -58,9 +58,14 @@ GET /<shorten-url-id>/status?[full-info]&[max-result=10]&[offset=0]
 - [x] (1 балл) Реализуйте метод `GET /ping`, который возвращает информацию о статусе доступности БД.
 ![image](https://github.com/user-attachments/assets/d1394526-b7e1-4894-9e32-26bccf08c47d)
 
-- [ ] (1 балл) Реализуйте возможность «удаления» сохранённого URL. Запись должна остаться, но помечаться как удалённая. При попытке получения полного URL возвращать ответ с кодом `410 Gone`.
+- [x] (1 балл) Реализуйте возможность «удаления» сохранённого URL. Запись должна остаться, но помечаться как удалённая. При попытке получения полного URL возвращать ответ с кодом `410 Gone`.
+![image](https://github.com/user-attachments/assets/5c675949-b3e0-4f9c-bbf1-dd17c451dc61)
+
+
 - [x] (2 балла) Реализуйте middlware, блокирующий доступ к сервису из запрещённых подсетей (black list).
 ![image](https://github.com/user-attachments/assets/85392e93-ebc9-48c8-906c-6b2f854200e2)
+![image](https://github.com/user-attachments/assets/76638d0f-3d93-4f48-bbee-c3455b76d0ec)
+![image](https://github.com/user-attachments/assets/b7b7635a-69fb-444a-af63-e7c5460154c4)
 
 
 - [ ] (2 балла) Реализуйте возможность передавать ссылки пачками (batch upload).
